@@ -1,0 +1,36 @@
+.box {
+  background-color: rgb(26, 180, 180);
+  width: 200px;
+  height: 200px;
+  border: solid 0.5px #000;
+}
+
+#colors {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px 300px;
+}
+
+h3,
+p {
+  display: inline;
+}
+
+fieldset {
+  display: grid;
+  grid-template-columns: 0.01fr 1fr;
+  gap: 5px;
+  margin: 5px 1700px 0 20px;
+}
+
+legend {
+  font-weight: 700;
+}
+
+#colorpicker,
+#colorharmony {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  margin: 0;
+}
