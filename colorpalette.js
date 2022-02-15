@@ -11,6 +11,9 @@ function showHarmony() {
     case "analogous":
       analogousLoop(colorHex);
       break;
+    case "monochromatic":
+      monochromousLoop(colorHex);
+      break;
     default:
       console.log("something else");
       break;
@@ -29,7 +32,6 @@ function doAnalogous(hexColor, step) {
   let s = color.s;
   let l = color.l;
   return { h, s, l };
-  document.querySelector("#resultBox>.hsl");
 }
 
 function analogousLoop(colorHex) {
@@ -48,6 +50,81 @@ function analogousLoop(colorHex) {
   }
 }
 
+function doMonochromous(hexColor, step, variable, operation) {
+  let color = hexToHsl(hexColor);
+  color.h = parseInt(color.h);
+  color.s = parseInt(color.s);
+  color.l = parseInt(color.l);
+  let h = color.h;
+  let s = color.s;
+  let l = color.l;
+  if (variable === "l") {
+    if (operation === "more") {
+      l = color.l + step;
+    } else if (operation === "less") {
+      l = color.l - step;
+    }
+    if (l < 0) {
+      l = 100 + l;
+    }
+    if (l > 100) {
+      l = l - 100;
+    }
+  } else if (variable === "s") {
+    if (operation === "more") {
+      s = color.s + step;
+    } else if (operation === "less") {
+      s = color.s - step;
+    }
+    if (s < 0) {
+      s = 100 + s;
+    }
+    if (s > 100) {
+      s = s - 100;
+    }
+  }
+  console.log(typeof s);
+  console.log(h, s, l);
+  return { h, s, l };
+}
+
+function monochromousLoop(colorHex) {
+  let step = 15;
+
+  for (i = 1; i < 6; i++) {
+    let operation = "";
+    let variable = "";
+    if (i === 3) {
+      console.log("inside");
+    } else {
+      if (i % 2) {
+        operation = "more";
+      } else {
+        operation = "less";
+      }
+      if (i < 3) {
+        variable = "s";
+      } else {
+        variable = "l";
+      }
+      console.log(i, variable, operation);
+      display(document.querySelector("#color" + i + ">.hsl"), doHslString(doMonochromous(colorHex, step, variable, operation)));
+      display(
+        document.querySelector("#color" + i + ">.rgb"),
+        doRgbString(hslToRgb(doMonochromous(colorHex, step, variable, operation)))
+      );
+      display(
+        document.querySelector("#color" + i + ">.hex"),
+        rgbToHex(hslToRgb(doMonochromous(colorHex, step, variable, operation)))
+      );
+      displayColor(
+        document.querySelector("#color" + i + ">.box"),
+        rgbToCss(hslToRgb(doMonochromous(colorHex, step, variable, operation)))
+      );
+    }
+  }
+}
+
 function getColor(colorpicker) {
   return colorpicker.value;
 }
@@ -60,7 +137,7 @@ function displayColor(container, rgbColorString) {
   container.style.backgroundColor = rgbColorString;
 }
 
-function displayValues() {
+function displayUserColorValues() {
   let colorHex = getColor(colorInput);
   let colorRgb = hexToRgb(colorHex);
   let colorHsl = hexToHsl(colorHex);
