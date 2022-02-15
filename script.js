@@ -1,10 +1,29 @@
-let color;
+let colorInput = document.querySelector("#colorpicker");
+
 function getColor(colorpicker) {
-  color = colorpicker.value;
-  document.querySelector("#hex").textContent = color;
-  document.querySelector("#rgb").textContent = hexToRgb(color);
-  document.querySelector("#hsl").textContent = rgbToHsl(hexToRgb(color));
-  document.querySelector(".box").style.backgroundColor = `rgb(${hexToRgb(color)})`;
+  return colorpicker.value;
+}
+
+function display(container, color) {
+  container.textContent = color;
+}
+
+function displayColor(container, rgbColorString) {
+  container.style.backgroundColor = `rgb(${rgbColorString})`;
+}
+
+function displayValues() {
+  let colorHex = getColor(colorInput);
+  let colorRgb = hexToRgb(colorHex);
+  let colorHsl = rgbToHsl(hexToRgb(colorHex));
+  display(document.querySelector("#hex"), colorHex);
+  display(document.querySelector("#rgb"), colorRgb);
+  display(document.querySelector("#hsl"), colorHsl);
+  //document.querySelector("#hex").textContent = color;
+  //document.querySelector("#rgb").textContent = hexToRgb(color);
+  //document.querySelector("#hsl").textContent = rgbToHsl(hexToRgb(color));
+  displayColor(document.querySelector(".box"), colorRgb);
+  //document.querySelector(".box").style.backgroundColor = `rgb(${hexToRgb(colorHex)})`;
 }
 
 //HEX to RGB
@@ -62,5 +81,5 @@ function rgbToHsl(rgbString) {
   s *= 100;
   l *= 100;
 
-  return h.toFixed() + "%, " + s.toFixed() + "%, " + l.toFixed() + "%"; // just for testing
+  return h.toFixed() + "%, " + s.toFixed() + "%, " + l.toFixed() + "%";
 }
