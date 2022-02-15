@@ -33,6 +33,7 @@
           <p class="hsl"></p>
         </div>
         <div id="resultBox">
+          <h3>Your color:</h3>
           <div class="box"></div>
           <h3>RGB:</h3>
           <p class="rgb"></p>
@@ -68,7 +69,7 @@
       </div>
 
       <div id="operations">
-        <input type="color" id="colorpicker" oninput="getColor(this);displayValues();" />
+        <input type="color" id="colorpicker" oninput="getColor(this);displayValues();showHarmony();" />
         <fieldset onchange="showHarmony();">
           <legend id="colorharmony">Color harmony:</legend>
           <input type="radio" id="analogous" name="radio" />
