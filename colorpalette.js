@@ -12,7 +12,10 @@ function showHarmony() {
       analogousLoop(colorHex);
       break;
     case "monochromatic":
-      monochromousLoop(colorHex);
+      monochromaticLoop(colorHex);
+      break;
+    case "triad":
+      triadLoop(colorHex);
       break;
     default:
       console.log("something else");
@@ -44,13 +47,12 @@ function analogousLoop(colorHex) {
       display(document.querySelector("#color" + i + ">.rgb"), doRgbString(hslToRgb(doAnalogous(colorHex, step))));
       display(document.querySelector("#color" + i + ">.hex"), rgbToHex(hslToRgb(doAnalogous(colorHex, step))));
       displayColor(document.querySelector("#color" + i + ">.box"), rgbToCss(hslToRgb(doAnalogous(colorHex, step))));
-      console.log(rgbToCss(hslToRgb(doAnalogous(colorHex, step))));
       step += 15;
     }
   }
 }
 
-function doMonochromous(hexColor, step, variable, operation) {
+function doMonochromatic(hexColor, step, variable, operation) {
   let color = hexToHsl(hexColor);
   color.h = parseInt(color.h);
   color.s = parseInt(color.s);
@@ -83,19 +85,16 @@ function doMonochromous(hexColor, step, variable, operation) {
       s = s - 100;
     }
   }
-  console.log(typeof s);
-  console.log(h, s, l);
   return { h, s, l };
 }
 
-function monochromousLoop(colorHex) {
+function monochromaticLoop(colorHex) {
   let step = 15;
 
   for (i = 1; i < 6; i++) {
     let operation = "";
     let variable = "";
     if (i === 3) {
-      console.log("inside");
     } else {
       if (i % 2) {
         operation = "more";
@@ -107,20 +106,61 @@ function monochromousLoop(colorHex) {
       } else {
         variable = "l";
       }
-      console.log(i, variable, operation);
-      display(document.querySelector("#color" + i + ">.hsl"), doHslString(doMonochromous(colorHex, step, variable, operation)));
+      display(document.querySelector("#color" + i + ">.hsl"), doHslString(doMonochromatic(colorHex, step, variable, operation)));
       display(
         document.querySelector("#color" + i + ">.rgb"),
-        doRgbString(hslToRgb(doMonochromous(colorHex, step, variable, operation)))
+        doRgbString(hslToRgb(doMonochromatic(colorHex, step, variable, operation)))
       );
       display(
         document.querySelector("#color" + i + ">.hex"),
-        rgbToHex(hslToRgb(doMonochromous(colorHex, step, variable, operation)))
+        rgbToHex(hslToRgb(doMonochromatic(colorHex, step, variable, operation)))
       );
       displayColor(
         document.querySelector("#color" + i + ">.box"),
-        rgbToCss(hslToRgb(doMonochromous(colorHex, step, variable, operation)))
+        rgbToCss(hslToRgb(doMonochromatic(colorHex, step, variable, operation)))
       );
+    }
+  }
+}
+
+function doTriad(hexColor, step, importance) {
+  let color = hexToHsl(hexColor);
+  color.h = parseInt(color.h);
+  color.s = parseInt(color.s);
+  color.l = parseInt(color.l);
+  let h = color.h + step;
+  let s = color.s;
+  let l = color.l;
+  if (importance === "low") {
+    l = color.l + 10;
+    if (l > 100) {
+      l = l - 100;
+    }
+  }
+  if (h < 0) {
+    h = 360 + h;
+  }
+  if (h > 360) {
+    h = h - 360;
+  }
+  return { h, s, l };
+}
+
+function triadLoop(colorHex) {
+  let step = 120;
+
+  for (i = 1; i < 6; i++) {
+    let importance = "";
+    if (i === 3) {
+      step *= 2;
+    } else {
+      if (i % 2) {
+        importance = "low";
+      }
+      display(document.querySelector("#color" + i + ">.hsl"), doHslString(doTriad(colorHex, step, importance)));
+      display(document.querySelector("#color" + i + ">.rgb"), doRgbString(hslToRgb(doTriad(colorHex, step, importance))));
+      display(document.querySelector("#color" + i + ">.hex"), rgbToHex(hslToRgb(doTriad(colorHex, step, importance))));
+      displayColor(document.querySelector("#color" + i + ">.box"), rgbToCss(hslToRgb(doTriad(colorHex, step, importance))));
     }
   }
 }
