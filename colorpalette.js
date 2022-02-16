@@ -17,6 +17,9 @@ function showHarmony() {
     case "triad":
       triadLoop(colorHex);
       break;
+    case "complementary":
+      complementaryLoop(colorHex);
+      break;
     default:
       console.log("something else");
       break;
@@ -161,6 +164,56 @@ function triadLoop(colorHex) {
       display(document.querySelector("#color" + i + ">.rgb"), doRgbString(hslToRgb(doTriad(colorHex, step, importance))));
       display(document.querySelector("#color" + i + ">.hex"), rgbToHex(hslToRgb(doTriad(colorHex, step, importance))));
       displayColor(document.querySelector("#color" + i + ">.box"), rgbToCss(hslToRgb(doTriad(colorHex, step, importance))));
+    }
+  }
+}
+
+function doComplementary(hexColor, step, importance) {
+  let color = hexToHsl(hexColor);
+  color.h = parseInt(color.h);
+  color.s = parseInt(color.s);
+  color.l = parseInt(color.l);
+  let h = color.h + step;
+  let s = color.s;
+  let l = color.l;
+  if (importance === "low") {
+    l = color.l + 10;
+  } else if (importance === "lower") {
+    l = color.l + 20;
+  }
+  if (l > 100) {
+    l = l - 100;
+  }
+  if (h < 0) {
+    h = 360 + h;
+  }
+  if (h > 360) {
+    h = h - 360;
+  }
+  return { h, s, l };
+}
+
+function complementaryLoop(colorHex) {
+  let step = 0;
+
+  for (i = 1; i < 6; i++) {
+    let importance = "";
+    if (i === 3) {
+      step = 180;
+    } else {
+      if (i === 1) {
+        importance = "lower";
+      } else if (i != 4) {
+        importance = "low";
+      }
+      console.log(i, importance);
+      display(document.querySelector("#color" + i + ">.hsl"), doHslString(doComplementary(colorHex, step, importance)));
+      display(document.querySelector("#color" + i + ">.rgb"), doRgbString(hslToRgb(doComplementary(colorHex, step, importance))));
+      display(document.querySelector("#color" + i + ">.hex"), rgbToHex(hslToRgb(doComplementary(colorHex, step, importance))));
+      displayColor(
+        document.querySelector("#color" + i + ">.box"),
+        rgbToCss(hslToRgb(doComplementary(colorHex, step, importance)))
+      );
     }
   }
 }
