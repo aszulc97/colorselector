@@ -23,6 +23,9 @@ function showHarmony() {
     case "compound":
       compoundLoop(colorHex);
       break;
+    case "shades":
+      shadesLoop(colorHex);
+      break;
     default:
       console.log("something else");
       break;
@@ -248,6 +251,35 @@ function compoundLoop(colorHex) {
         rgbToCss(hslToRgb(doComplementary(colorHex, step, importance)))
       );
       analogStep += 15;
+    }
+  }
+}
+
+function doShades(hexColor, step) {
+  let color = hexToHsl(hexColor);
+  let h = color.h;
+  let s = color.s;
+  let l = color.l - step;
+  if (l < 0) {
+    l = 100 + l;
+  }
+  if (l > 100) {
+    l = l - 100;
+  }
+  return { h, s, l };
+}
+
+function shadesLoop(colorHex) {
+  let step = -10;
+  for (i = 1; i < 6; i++) {
+    if (i === 3) {
+      step += 5;
+    } else {
+      display(document.querySelector("#color" + i + ">.hsl"), doHslString(doShades(colorHex, step)));
+      display(document.querySelector("#color" + i + ">.rgb"), doRgbString(hslToRgb(doShades(colorHex, step))));
+      display(document.querySelector("#color" + i + ">.hex"), rgbToHex(hslToRgb(doShades(colorHex, step))));
+      displayColor(document.querySelector("#color" + i + ">.box"), rgbToCss(hslToRgb(doShades(colorHex, step))));
+      step += 5;
     }
   }
 }
