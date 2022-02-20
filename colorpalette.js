@@ -1,35 +1,41 @@
 let colorInput = document.querySelector("#colorpicker");
 
+//controller
 function checkedId() {
   return document.querySelector('input[name="radio"]:checked').id;
 }
 
+function doAHarmony(harmonyFunc, colorHex) {
+  harmonyFunc(colorHex);
+}
+
 function showHarmony() {
   let colorHex = getColor(colorInput);
-  let harmony = checkedId();
-  switch (harmony) {
-    case "analogous":
-      analogousLoop(colorHex);
-      break;
-    case "monochromatic":
-      monochromaticLoop(colorHex);
-      break;
-    case "triad":
-      triadLoop(colorHex);
-      break;
-    case "complementary":
-      complementaryLoop(colorHex);
-      break;
-    case "compound":
-      compoundLoop(colorHex);
-      break;
-    case "shades":
-      shadesLoop(colorHex);
-      break;
-    default:
-      console.log("something else");
-      break;
-  }
+  let chosenHarmony = eval(checkedId());
+  doAHarmony(chosenHarmony, colorHex);
+  // switch (chosenHarmony) {
+  //   case "analogous":
+  //     analogousLoop(colorHex);
+  //     break;
+  //   case "monochromatic":
+  //     monochromaticLoop(colorHex);
+  //     break;
+  //   case "triad":
+  //     triadLoop(colorHex);
+  //     break;
+  //   case "complementary":
+  //     complementaryLoop(colorHex);
+  //     break;
+  //   case "compound":
+  //     compoundLoop(colorHex);
+  //     break;
+  //   case "shades":
+  //     shadesLoop(colorHex);
+  //     break;
+  //   default:
+  //     console.log("something else");
+  //     break;
+  // }
 }
 
 function doAnalogous(hexColor, step) {
@@ -46,7 +52,7 @@ function doAnalogous(hexColor, step) {
   return { h, s, l };
 }
 
-function analogousLoop(colorHex) {
+function analogous(colorHex) {
   let step = -40;
   for (i = 1; i < 6; i++) {
     if (i === 3) {
@@ -97,7 +103,7 @@ function doMonochromatic(hexColor, step, variable, operation) {
   return { h, s, l };
 }
 
-function monochromaticLoop(colorHex) {
+function monochromatic(colorHex) {
   let step = 15;
 
   for (i = 1; i < 6; i++) {
@@ -155,7 +161,7 @@ function doTriad(hexColor, step, importance) {
   return { h, s, l };
 }
 
-function triadLoop(colorHex) {
+function triad(colorHex) {
   let step = 120;
 
   for (i = 1; i < 6; i++) {
@@ -199,7 +205,7 @@ function doComplementary(hexColor, step, importance) {
   return { h, s, l };
 }
 
-function complementaryLoop(colorHex) {
+function complementary(colorHex) {
   let step = 0;
 
   for (i = 1; i < 6; i++) {
@@ -226,7 +232,7 @@ function complementaryLoop(colorHex) {
 
 //1st & 5th analog
 
-function compoundLoop(colorHex) {
+function compound(colorHex) {
   let compStep = 0;
   let analogStep = -40;
   let step;
@@ -269,7 +275,7 @@ function doShades(hexColor, step) {
   return { h, s, l };
 }
 
-function shadesLoop(colorHex) {
+function shades(colorHex) {
   let step = -10;
   for (i = 1; i < 6; i++) {
     if (i === 3) {
@@ -288,6 +294,7 @@ function getColor(colorpicker) {
   return colorpicker.value;
 }
 
+//view
 function display(container, color) {
   container.textContent = color;
 }
@@ -315,6 +322,7 @@ function doRgbString(rgbObject) {
   return rgbObject.r + ", " + rgbObject.g + ", " + rgbObject.b;
 }
 
+//model
 //HEX to RGB
 function hexToRgb(hexstring) {
   let r = lettersToNumbers(hexstring.charAt(1)) * 16 + lettersToNumbers(hexstring.charAt(2));
